@@ -18,6 +18,8 @@ public class D2E1 {
   }
 
   public Javalin javalinApp() {
+    app.get("/ping", ctx -> ctx.result("pong"));
+
     return app;
   }
 }

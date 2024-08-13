@@ -36,6 +36,8 @@ class CounterRouter {
      *
      * <p>It should simply ctx.json(state)
      */
+
+     ctx.json(D3E1.counter);
   }
 
   public static void increment(Context ctx) {
@@ -44,5 +46,7 @@ class CounterRouter {
      *
      * <p>It should increase the counter by 1 and then res.json(state)
      */
+    D3E1.counter.count++;
+    getCounter(ctx);
   }
 }

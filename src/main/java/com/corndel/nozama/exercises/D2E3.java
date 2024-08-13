@@ -1,7 +1,12 @@
 package com.corndel.nozama.exercises;
 
 import io.javalin.Javalin;
+import io.javalin.http.HttpStatus;
+import net.bytebuddy.dynamic.DynamicType.Builder.FieldDefinition.Optional;
+
 import java.util.ArrayList;
+
+import com.corndel.nozama.repositories.UserRepository;
 
 public class D2E3 {
   private Javalin app;
@@ -19,21 +24,28 @@ public class D2E3 {
         "/alarms",
         ctx -> {
           /** Responds with all the alarms as a JSON response */
+          ctx.json(alarms);
         });
 
     app.get(
         "/alarms/{index}",
         ctx -> {
-          /** Responds with the alarm at the given index */
+          var index = Integer.parseInt(ctx.pathParam("index"));
+
+          ctx.json(alarms.get(index));
         });
 
     app.post(
         "/alarms",
         ctx -> {
           /**
-           * Request contains a new alarm in the req.body Push it to the end of the alarms array
+           * Request contains a new alarm in the req.body Push it to the end of the alarms
+           * array
            * Respond with a 201 status code
            */
+          var alarm = ctx.bodyAsClass(Alarm.class);
+          alarms.add(alarm);
+          ctx.status(HttpStatus.CREATED).json(alarm);
         });
   }
 
@@ -50,7 +62,8 @@ class Alarm {
   public String time;
   public String message;
 
-  public Alarm() {}
+  public Alarm() {
+  }
 
   public Alarm(String time, String message) {
     this.time = time;

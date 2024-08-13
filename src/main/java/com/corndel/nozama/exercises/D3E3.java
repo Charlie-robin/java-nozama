@@ -1,6 +1,7 @@
 package com.corndel.nozama.exercises;
 
 import io.javalin.Javalin;
+import io.javalin.http.HttpResponseException;
 
 public class D3E3 {
   public Javalin app;
@@ -24,6 +25,14 @@ public class D3E3 {
            * <p>In case this fails, set the status of the response to the error code and send a
            * useful message.
            */
+
+           try {
+            var body = ctx.bodyAsClass(UsernameRequest.class);
+            account.updateUsername(body.newUsername, body.password);
+            ctx.json(new UsernameResponse(body.newUsername));
+           } catch (HttpResponseException  e) {
+            ctx.status(e.getStatus()).result(e.getMessage());
+           }
         });
   }
 }

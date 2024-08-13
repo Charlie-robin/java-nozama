@@ -1,7 +1,9 @@
 package com.corndel.nozama.exercises;
 
 import io.javalin.http.BadRequestResponse;
+import io.javalin.http.ForbiddenResponse;
 import io.javalin.http.HttpResponseException;
+import io.javalin.http.UnauthorizedResponse;
 
 public class D3E2 {
 
@@ -25,8 +27,18 @@ public class D3E2 {
       }
 
       // If password is not given, throw an AppError with code 401 (Unauthorized)
-      // If password is given but not correct, throw an AppError with code 403 (Forbidden)
+      if (givenPassword == null || givenPassword.isBlank()) {
+        throw new UnauthorizedResponse("Password cannot be blank");
+      }
+
+      // If password is given but not correct, throw an AppError with code 403
+      // (Forbidden)
+      if (!givenPassword.equals(password)) {
+        throw new ForbiddenResponse();
+      }
+
       // If newUsername is given and password is correct, update the username
+      username = newUsername;
     }
   }
 }
